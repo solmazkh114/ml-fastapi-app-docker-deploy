@@ -1,0 +1,6 @@
+pandas==2.3.2
+scikit-learn==1.7.2
+joblib==1.5.2
+fastapi==0.117.1
+uvicorn[standard]
+loguru==0.7.3
