@@ -1,0 +1,23 @@
+steps:
+  # Step 1: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/home-price-repo/home-price-api:latest', '.']
+
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/home-price-repo/home-price-api:latest']
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - home-price-predictor
+      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/home-price-repo/home-price-api:latest
+      - --region=us-central1
+      - --platform=managed
+      - --quiet
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/home-price-repo/home-price-api:latest'
